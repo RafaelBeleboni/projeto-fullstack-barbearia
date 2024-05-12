@@ -1,0 +1,49 @@
+/* Centraliza o formulário na tela */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5; /* Cor de fundo suave */
+  }
+  
+  /* Estilos para o formulário */
+  .login-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona sombra */
+    max-width: 400px; /* Largura máxima do formulário */
+    width: 100%; /* Largura total para telas menores */
+  }
+  
+  /* Estilos para os campos de entrada */
+  .login-form input {
+    width: 100%; /* Largura total para os inputs */
+    padding: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc; /* Borda suave */
+    border-radius: 5px;
+  }
+  
+  /* Estilos para o botão de envio */
+  .login-form button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: black; /* Cor do botão */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Aponta que é clicável */
+  }
+  
+  /* Efeito de hover para o botão */
+  .login-form button:hover {
+    background-color: rgb(45, 40, 40); /* Cor mais escura ao passar o mouse */
+  }
+  
+  /* Título do formulário */
+  .login-form h2 {
+    text-align: center; /* Centraliza o texto */
+  }
+  

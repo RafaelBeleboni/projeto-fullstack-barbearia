@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "target": "ESNext", // Alvo de compilação
+      "module": "CommonJS", // Para projetos Express
+      "strict": true, // Ativa verificações rigorosas
+      "typeRoots": ["./node_modules/@types", "./src/types"], // Para incluir tipos personalizados
+      "moduleResolution": "Node", // Resolução de módulos no estilo Node.js
+      "esModuleInterop": true, // Para permitir interoperabilidade com módulos ES
+      "skipLibCheck": true, // Para evitar conflitos em verificações de bibliotecas
+    },
+    "include": ["src/**/*.ts"] // Para incluir todos os arquivos TypeScript
+  }
+  
