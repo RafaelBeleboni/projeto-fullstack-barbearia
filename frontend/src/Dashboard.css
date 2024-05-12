@@ -1,0 +1,61 @@
+.dashboard-container {
+  padding: 20px; /* Adicionar espaço interno */
+  background-color: #f5f5f5; /* Cor de fundo suave */
+  font-family: Arial, sans-serif; /* Estilo de fonte */
+}
+
+.dashboard-container h1 {
+  color: #333; /* Cor do título */
+  text-align: center; /* Centralizar o texto */
+}
+
+.dashboard-section {
+  margin-bottom: 20px; /* Espaço entre as seções */
+  background-color: #fff; /* Cor de fundo branca para seções */
+  border: 1px solid #ddd; /* Borda ao redor das seções */
+  padding: 10px; /* Adicionar espaço interno */
+  border-radius: 5px; /* Canto arredondado */
+}
+
+.dashboard-section h2 {
+  color: #444; /* Cor do subtítulo */
+  border-bottom: 1px solid #ddd; /* Linha separadora para o subtítulo */
+  padding-bottom: 5px; /* Espaço interno no subtítulo */
+}
+
+.dashboard-section ul {
+  list-style-type: none; /* Remover marcadores de lista */
+  padding-left: 0; /* Remover espaço à esquerda */
+}
+
+.dashboard-section ul li {
+  padding: 5px; /* Espaço entre itens da lista */
+}
+
+.dashboard-section ul li a {
+  color: #007bff; /* Cor do link */
+  text-decoration: none; /* Remover sublinhado */
+}
+
+.dashboard-section ul li a:hover {
+  text-decoration: underline; /* Adicionar sublinhado ao passar o mouse */
+}
+
+.button {
+  background-color: #007bff; /* Cor do botão */
+  color: #fff; /* Cor do texto no botão */
+  border: none; /* Remover bordas */
+  padding: 10px 20px; /* Espaço interno */
+  border-radius: 5px; /* Canto arredondado */
+  cursor: pointer; /* Mudar cursor ao passar o mouse */
+}
+
+.button:hover {
+  background-color: #0056b3; /* Cor ao passar o mouse */
+}
+
+.error {
+  color: red; /* Cor para mensagens de erro */
+  font-weight: bold; /* Texto em negrito */
+  text-align: center; /* Centralizar texto */
+}
