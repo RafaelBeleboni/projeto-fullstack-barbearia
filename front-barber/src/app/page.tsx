@@ -23,10 +23,12 @@ const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
   }
   try {
     const response = await apiBase.post("/auth/login", formData)
+    console.log(response.data)
     localStorage.setItem("@Cliente", JSON.stringify(response.data.cliente))
     localStorage.setItem("@Token", response.data.token)
     router.push('/dashboard'); // Redirecionar para a página de login ou outra página
   } catch (error) {
+    console.log(error)
     setErrorMessage('Erro ao conectar ao servidor');
   }
 };

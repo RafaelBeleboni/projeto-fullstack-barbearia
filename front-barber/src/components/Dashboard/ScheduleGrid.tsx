@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import apiBase from "@/api/apiBase";
+import useChoiceStore from '@/store/typeChoiceStore';
 
 interface ScheduleGridProps {
   dayOfWeek: number | null;
   fetchData: any[];
-  onSelectSchedule: (schedule: any) => void;
 }
 
-const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData, onSelectSchedule }) => {
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData }) => {
+
+  const { selectedChoice, setSelectedTimeId,setFineshedSchedule } = useChoiceStore();
+
+  const isHairAndBeard = selectedChoice === "Cabelo : Barba"
+  
   const handleTimeClick = (time: string) => {
-    setSelectedTime(time);
-    onSelectSchedule(time);
+    let timeId: any[] = []
+
+    fetchData.forEach((schedule) => {
+      schedule.horarios[0] === time ? timeId.push(schedule.id) : null;
+    });
+
+    isHairAndBeard ? timeId.push(timeId[0] + 1) : null;
+
+    setSelectedTimeId(timeId);
+    setFineshedSchedule(true)
   };
   const scheduleTimes =
     dayOfWeek === 6 // Sábado
@@ -59,13 +71,39 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData, onSel
           "18:00",
           "18:30",
         ];
+
+  
         const avaibleSchedules = fetchData.filter(schedule => schedule.Agendamento === null);
+
+        const hairAndBeardAvaibleSchedules: any = []
+        const avaibleSchedulesHours = []
+
+        for (const schedule of avaibleSchedules) {
+          avaibleSchedulesHours.push(schedule.horarios[0])
+        }
+
+        for (let i = 0; i < fetchData.length - 1; i++) {
+          const currentIndex = fetchData[i]
+          const nextIndex = fetchData[i + 1]
+          
+          if(avaibleSchedulesHours.includes(currentIndex.horarios[0])){
+            if(nextIndex.Agendamento === null){
+              hairAndBeardAvaibleSchedules.push(`${currentIndex.horarios[0]}`)
+            }
+          }
+        }
+
+  
+
+
   return (
     <div>
       <div className="flex flex-wrap gap-2 text-center">
         {scheduleTimes.map((time, index) => {
-          const isClickable = avaibleSchedules.some(schedule => schedule.horarios.includes(time));
+          
+          const isClickable = isHairAndBeard ? hairAndBeardAvaibleSchedules.includes(time) : avaibleSchedules.some(schedule => schedule.horarios.includes(time));
           const isDisabled = !isClickable;
+
           return (
             <button
             key={index}
