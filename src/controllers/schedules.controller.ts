@@ -101,6 +101,10 @@ export const createSchedule = async (
         tipoCorte,
         status: status || 'agendado', // Default para "agendado"
       },
+      include:{
+        cliente:true,
+        horarioDisponivel:true
+      }
     });
 
     res.status(201).json(novoAgendamento); // Retorna o novo agendamento criado
