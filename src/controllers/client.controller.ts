@@ -1,9 +1,15 @@
 import { Request, Response } from 'express';
-import { createClientService, getAllClientsService } from '../services/client.service';
+import { checkClientExistent, createClientService, getAllClientsService } from '../services/client.service';
 
 // Criar um cliente
 export const createClient = async (req: Request, res: Response) => {
   const { nome, telefone } = req.body;
+  const existentClient = await checkClientExistent(telefone);
+
+  if(existentClient) {
+    return res.status(400).json({ error: 'Cliente já cadastrado' });
+  }
+  
   try {
     const newClient = await createClientService(nome, telefone);
     res.status(201).json(newClient);
