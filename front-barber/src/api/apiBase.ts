@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiBase = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: "https://projeto-fullstack-barbearia.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
