@@ -9,7 +9,7 @@ interface ScheduleGridProps {
 
 const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData }) => {
 
-  const { selectedChoice, setSelectedTimeId,setFineshedSchedule } = useChoiceStore();
+  const { selectedChoice, setSelectedTimeId,setFineshedSchedule,setSelectedTime } = useChoiceStore();
 
   const isHairAndBeard = selectedChoice === "Cabelo : Barba"
   
@@ -23,6 +23,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData }) => 
     isHairAndBeard ? timeId.push(timeId[0] + 1) : null;
 
     setSelectedTimeId(timeId);
+    setSelectedTime(time);
     setFineshedSchedule(true)
   };
   const scheduleTimes =
@@ -97,8 +98,8 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData }) => 
 
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-2 text-center">
+    <>
+      <div className="flex flex-wrap gap-2 text-center justify-center">
         {scheduleTimes.map((time, index) => {
           
           const isClickable = isHairAndBeard ? hairAndBeardAvaibleSchedules.includes(time) : avaibleSchedules.some(schedule => schedule.horarios.includes(time));
@@ -107,7 +108,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData }) => 
           return (
             <button
             key={index}
-            className={`w-24 p-8 border-2 border-black rounded-lg text-center ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-50"}`}
+            className={`w-24 p-8 border-2 border-black rounded-lg text-center flex justify-center items-center ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-50"}`}
             onClick={isClickable ? () => handleTimeClick(time) : undefined}
             disabled={isDisabled}
           >
@@ -116,7 +117,7 @@ const ScheduleGrid: React.FC<ScheduleGridProps> = ({ dayOfWeek, fetchData }) => 
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 

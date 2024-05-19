@@ -62,7 +62,7 @@ const Calendar: React.FC<CalendarProps> = ({ handlePreviousMonth, isCurrentMonth
       return (
         <button
           key={day.toString()}
-          className={`p-2 border rounded-lg text-center ${
+          className={`p-2 border rounded-lg text-center flex justify-center items-center ${
             isNonClickable
               ? "bg-gray-200 text-gray-400 opacity-50 cursor-not-allowed"
               : "hover:bg-blue-50"

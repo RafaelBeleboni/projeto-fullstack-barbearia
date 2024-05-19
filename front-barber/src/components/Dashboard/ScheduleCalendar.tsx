@@ -12,11 +12,10 @@ import ScheduleGrid from "./ScheduleGrid";
 import TypeChoiceModal from "./TypeChoiceModal";
 import useChoiceStore from "@/store/typeChoiceStore";
 import ConfirmBoxModal from "./ConfirmBoxModal";
+import RedirectFinaly from "./RedirectFinaly";
 
 const ScheduleCalendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-
-  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
   const [trouxeHorarios, setTrouxeHorarios] = useState(false);
 
@@ -24,10 +23,11 @@ const ScheduleCalendar = () => {
 
   const [fetchData, setFetchData] = useState([]);
 
-  const {selectedChoice, setSelectedChoice, selectedTimeId, fineshedSchedule, setConfirmBox, confirmBox, isConfirmed } = useChoiceStore()
+  const {selectedChoice, setSelectedChoice, selectedTimeId, fineshedSchedule, setConfirmBox, confirmBox, isConfirmed, selectedDay,setSelectedDay} = useChoiceStore()
+  const [redirectClient, setRedirectClient]= useState(false)
 
   const isSelected = selectedChoice? true : false;
-   
+  
 useEffect(() => {
   if(fineshedSchedule){
     setConfirmBox(true)  
@@ -49,6 +49,8 @@ useEffect(() => {
         };
         const response = await apiBase.post("/horarios/criar-agendamento", bodyData);
         console.log("Agendamento criado com sucesso", response.data);
+        setRedirectClient(true)
+        setConfirmBox(!confirmBox)
       } else if (selectedTimeId?.length === 2) {
         const requests = selectedTimeId.map((id, index) => {
           const bodyData = {
@@ -64,7 +66,9 @@ useEffect(() => {
         responses.forEach(response => {
           console.log("Agendamento criado com sucesso", response.data);
         });
-        setConfirmBox(true)
+        setRedirectClient(true)
+        setConfirmBox(!confirmBox)
+
       }
     } catch (err) {
       console.error("Erro ao criar agendamento:", err);
@@ -124,13 +128,14 @@ useEffect(() => {
 
   const isCurrentMonth =
     startOfMonth(currentMonth).getTime() === startOfMonth(new Date()).getTime();
-
+console.log(redirectClient)
   return (
     <>
+    {redirectClient && <RedirectFinaly/>}
     {confirmBox && <ConfirmBoxModal/>}
     { !isSelected && <TypeChoiceModal/> }
-    <div className="flex justify-center items-center h-screen px-4 flex-col">
-      <h1 className="text-2xl mb-4">{!trouxeHorarios ? "Clique no dia que você deseja agendar" : "Agora, selecione o horário"}</h1>
+    <div className={`flex justify-center items-center ${!trouxeHorarios ? "h-screen" : "h-full"} p-4 flex-col`}>
+      <h1 className="text-2xl mb-4  mt-4 text-center">{!trouxeHorarios ? "Clique no dia que você deseja agendar" : "Agora, selecione o horário"}</h1>
       <div className="p-5 bg-white rounded-lg shadow-lg w-full md:w-1/2 lg:w-1/3">
         {!trouxeHorarios ? (
           <>
@@ -145,13 +150,13 @@ useEffect(() => {
               />
           </>
         ) : (
-          <>
+          <div className="flex flex-col items-center justify-center">
           <ScheduleGrid dayOfWeek={dayOfWeek} fetchData={fetchData} />
-          <button className="w-46 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300" onClick={() => {
+          <button className="mt-4 w-full md:w-1/2 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300" onClick={() => {
             setTrouxeHorarios(!trouxeHorarios)
             setSelectedChoice(null)
             }}>Voltar</button>
-          </>
+          </div>
         )}
       </div>
     </div>

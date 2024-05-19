@@ -1,47 +1,54 @@
-// Primeiro, certifica-se de que o componente é um Client Component
 'use client';
 
-import { useRouter } from 'next/navigation'; // Use 'next/navigation' em vez de 'next/router'
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import apiBase from '@/api/apiBase';
+import { formatPhoneNumberInput } from '@/utils/utils';
 
 const Cadastro: React.FC = () => {
-  const router = useRouter(); // Agora, isto funcionará porque o componente é cliente
+  const router = useRouter();
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const nomeInput = event.currentTarget.elements.namedItem('nome') as HTMLInputElement;
-    const telefoneInput = event.currentTarget.elements.namedItem('telefone') as HTMLInputElement;
+    if (nome.length < 3) {
+      toast.error('O nome deve conter no mínimo 3 caracteres.', { autoClose: 1900 });
+      return;
+    }
 
-    const nome = nomeInput.value;
-    const telefone = telefoneInput.value;
+    const telefoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
+    if (!telefoneRegex.test(telefone)) {
+      toast.error('O telefone deve estar no formato (99) 99999-9999.', { autoClose: 1900 });
+      return;
+    }
+
+    const telefoneLimpo = telefone.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
 
     try {
-      const response = await fetch('http://localhost:3001/api/clientes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nome, telefone }),
-      });
-
-      if (response.ok) {
-        console.log('Cliente cadastrado com sucesso');
-        alert("Cadastro realizado com sucesso!")
-        router.push('/'); // Redirecionar para a página de login ou outra página
-      } else {
-        const error = await response.json();
-        console.error('Erro ao cadastrar cliente:', error);
-        alert("Número já cadastrado");
+      const response = await apiBase.post('/clientes', {nome, telefone: telefoneLimpo})
+      if (response.status === 201) {
+        toast.success('Cadastro realizado com sucesso!', { autoClose: 1900 });
+        setTimeout(() => router.push('/'), 3000);
       }
-    } catch (error) {
-      console.error('Erro de rede:', error);
+    } catch (error:any) {
+      toast.error(error.response.data.error, { autoClose: 1900 });
     }
   };
 
+  const handleTelefoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    let { value } = event.target;
+
+   setTelefone(formatPhoneNumberInput(value))
+  }
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 px-4">
+      <ToastContainer />
       <div className="w-96 bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Cadastro de Cliente</h2>
 
@@ -57,6 +64,8 @@ const Cadastro: React.FC = () => {
               name="nome"
               className="mt-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="Digite seu nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
             />
           </div>
 
@@ -66,11 +75,13 @@ const Cadastro: React.FC = () => {
               Celular:
             </label>
             <input
-              type="text"
+              type="tel"
               id="telefone"
               name="telefone"
               className="mt-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="Digite seu número de celular"
+              value={telefone}
+              onChange={handleTelefoneChange}
             />
           </div>
 
