@@ -11,6 +11,10 @@ interface ITypeChoiceProps {
   setConfirmBox: (value: boolean) => void;
   isConfirmed: boolean;
   setConfirmed: (value: boolean) => void;
+  selectedTime: string;
+  setSelectedTime: (value: string) => void;
+  selectedDay: Date | null;
+  setSelectedDay: (value: Date | null) => void;
 }
 // Defina o store usando o Zustand
 const useChoiceStore = create<ITypeChoiceProps>((set) => ({
@@ -19,6 +23,10 @@ const useChoiceStore = create<ITypeChoiceProps>((set) => ({
   fineshedSchedule: false,
   confirmBox: false,
   isConfirmed: false,
+  selectedTime: "",
+  selectedDay: null,
+  setSelectedDay: (value: Date | null) => set({ selectedDay: value }),
+  setSelectedTime: (value: string) => set({ selectedTime: value }),
   setConfirmed: (value: boolean) => set({ isConfirmed: value }),
   setConfirmBox: (value: boolean) => set({ confirmBox: value }),
   setFineshedSchedule: (value: boolean) => set({ fineshedSchedule: value }),
